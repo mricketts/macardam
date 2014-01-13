@@ -25,8 +25,12 @@ Carl Carlson IV:  carlcarlsoniv@gmail.com
   - Create Master Trail Array
   - Run google_mapify_each_section() function on each trail section object
   - Google Mapify Function
+      - Reset Trails Function
       - Create the path & draw it
       - On Path Click
+          - Run Reset Function on All Google Map Path Objects 
+          - Select active trail
+          - Change color of trail
           - If the Details Panel is closed, open it up.
           - Populate the Details Panel
       - On Path Mouseover
@@ -34,6 +38,7 @@ Carl Carlson IV:  carlcarlsoniv@gmail.com
           - Set the tooltip content
           - Create the tooltip object & display it
       - On Path Mouseout
+          - If trail is NOT active
           - Remove path hover styles
   - Define Coordinates for Each Trail Section
 
@@ -132,6 +137,7 @@ function initialize() {
         mapOptions);
 
 
+    var trailArray = [];
 
     /* Create & Run Function for Toggling the Details Panel
     ---------------------------------------------------------- */
@@ -211,7 +217,7 @@ function initialize() {
     When called, this function creates
     a new Trail Section Object. 
 --------------------------------------------- */
-  function TrailSection(id, name, difficulty, thumb, sponsor, coordinates, pathcolor, hovercolor) {
+  function TrailSection(id, name, difficulty, thumb, sponsor, coordinates, pathcolor, hovercolor, length, desc, active) {
     this.id = id;
     this.name = name;
     this.difficulty = difficulty;
@@ -220,6 +226,9 @@ function initialize() {
     this.coordinates = coordinates;
     this.pathcolor = pathcolor;
     this.hovercolor = hovercolor;
+    this.length = length;
+    this.desc = desc;
+    this.active = active;
   }
 
 /* Create Trail Objects and Set Properties
@@ -228,365 +237,464 @@ function initialize() {
 --------------------------------------------- */
   var trailSection_1 = new TrailSection(
       1,
-      "Trail Section 1",
+      "Crazy Call Location (1)",
       "Expert",
       "<img src='http://lorempixel.com/200/150/nature/1/Trail%20Section%201/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_1_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.46",
+      "This section is primarily two track and a small strip of flat single track that traverses across a field, past the Mather Baseball Field to the entrance of Bacon Strip.",
+      false
   );
   
   var trailSection_2 = new TrailSection(
       2,
-      "Trail Section 2",
+      "Bacon Strip Location (2)",
       "Beginner",
       "<img src='http://lorempixel.com/200/150/nature/2/Trail%20Section%202/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_2_coordinates,
       "#FF0000",
-      "#ffffff"
+      "#FFFFFF",
+      "0.58",
+      "This is a new section being built and completed this spring.  It is a nice single track climb from the Bacon Strip Location winding through a gorge and traversing up the hil to the railroad track.  From there, it follows a nice bench cut along the railroad popping out by the railroad overpass up onto 3rd Street.",
+      false
   );
 
   var trailSection_3 = new TrailSection(
-      2,
-      "Trail Section 3",
+      3,
+      "3rd Street Location (3)",
       "Advanced",
       "<img src='http://lorempixel.com/200/150/nature/3/Trail%20Section%203/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_3_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.19",
+      "This is a small and short connector through and over 3rd St. and 2nd St. that pops back out along the railroad tracks and sets you up to enter the Ishpeming Playgrounds.",
+      false
   );
 
   var trailSection_4 = new TrailSection(
-      2,
-      "Trail Section 4",
+      4,
+      "Lower Brokeback Location (4)",
       "Novice",
       "<img src='http://lorempixel.com/200/150/nature/4/Trail%20Section%204/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_4_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.22",
+      "Let the single track begin!  This is a great section that is all single track.  It is a gradual / non-technical climb with a few steeper spots, some winding corners and a little challenging spot near the top.",
+      false
   );
 
   var trailSection_5 = new TrailSection(
-      2,
-      "Trail Section 5",
+      5,
+      "Upper Brokeback Location (5)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/5/Trail%20Section%205/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_5_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.16",
+      "Black Diamond climb!  This section's climb will really challenge your balance and technical single track climbing abilities.  It is a couple minute climb.  When you get to the top, there is a beautiful view, a few big rocky drop sections and a ledge to navigate before entering Snakesback!",
+      false
   );
 
   var trailSection_6 = new TrailSection(
-      2,
-      "Trail Section 6",
+      6,
+      "Snakesback Location (6)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/6/Trail%20Section%206/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_6_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "1.26",
+      "Snakesback is a new descent put in during the fall of 2013.  It is fast, windy and very well designed.  There are a few very sharp traversing corners, all single-track the whole way down.  One of the best new sections on the trail!",
+      false
   );
 
   var trailSection_7 = new TrailSection(
-      2,
-      "Trail Section 7",
+      7,
+      "Golden Pond Location (7)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/7/Trail%20Section%207/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_7_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.60",
+      "This section is part single track and part two track leading up to Jackies favorite.  The single track comes up on and right past Golden Pond.  It is a very neat area.",
+      false
   );
 
   var trailSection_8 = new TrailSection(
-      2,
-      "Trail Section 8",
+      8,
+      "Jackies' Favorite Location (8)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/8/Trail%20Section%208/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_8_coordinates,
       "#3bb8b8",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.83",
+      "Another new section installed last year to cut off the Triple Mountain section and snowmobile trail leading to Negaunee.  Jackies' Favorite is beautifully bench cut with some sharper turns and a few sup rising quick climbs.  The downhill that crosses old Mill St. is fast and fun.  There is short two track section and you are popped out right at Snow Street.",
+      false
   );
 
   var trailSection_9 = new TrailSection(
-      2,
-      "Trail Section 9",
+      9,
+      "Snow Street Location (9)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/9/Trail%20Section%209/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_9_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.18",
+      "This quick section starts out with a steep 30' climb followed by a longer gradual ascent.  It has a fast down with a bermed sandy section and a sand pit drop before winding back to the two track that starts at Mill St.",
+      false
   );
 
   var trailSection_10 = new TrailSection(
-      2,
-      "Trail Section 10",
+      10,
+      "Mill Street Location (10)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/10/Trail%20Section%2010/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_10_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.55",
+      "Catch your breath and settle in to this 1.3 mile two-track section that brings you back over to the Fence Line Climb area.",
+      false
   );
 
   var trailSection_11 = new TrailSection(
-      2,
-      "Trail Section 11",
+      11,
+      "Fence Line Climb Location (11)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/11/Trail%20Section%2011/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_11_coordinates,
       "#3bb8b8",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.60",
+      "This is a 1.2 mile dirt road connector to Dead Deer if you fear the Fence Line Climb and Mather A section!",
+      false
   );
 
   var trailSection_12 = new TrailSection(
-      2,
-      "Trail Section 12",
+      12,
+      "Dead Deer Location (12)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/12/Trail%20Section%2012/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_12_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.80",
+      "Great single-track section.  Lots of ups and downs, some fairly technical quick climbs and tight turns make this section one of the most fun and challenging sections along the trail!",
+      false
   );
 
   var trailSection_13 = new TrailSection(
-      2,
-      "Trail Section 13",
+      13,
+      "Jasper Ridge Trail Head (13)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/13/Trail%20Section%2013/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_13_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "1.26",
+      "This is a connector to get from the Country Village to Al Quaal.  You wind through the RV park, past the water treatment facility and up into the cemetery grounds.  Their are a couple short, semi-steep climbs that can be sandy and sketchy at times so stay on your toes!",
+      false
   );
 
   var trailSection_14 = new TrailSection(
-      2,
-      "Trail Section 14",
+      14,
+      "Al Quaal Trail Head (14)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/14/Trail%20Section%2014/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_14_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.65",
+      "This 1 mile piece of trail is fast and hilly featuring a nice scenic entry into the back trails of Al Quaal.",
+      false
   );
 
   var trailSection_15 = new TrailSection(
-      2,
-      "Trail Section 15",
+      15,
+      "Deer Lake Location (15)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/15/Trail%20Section%2015/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_15_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "3.64",
+      "This section is quite possibly one of the most challenging hill workouts you will find on a bike.  The Deer Lake loop was designed as a hill interval workout loop for the Olympic Ski Team and is used all winter by Northern Michigan University and other athletes for just that. In the summer, MTB riders and racers are challenged by the relentless UP AND DOWN of this trails.  The decants are fast and the climbs are grueling!",
+      false
   );
 
   var trailSection_16 = new TrailSection(
-      2,
-      "Trail Section 16",
+      16,
+      "Teal Lake Climb Location (16)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/16/Trail%20Section%2016/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_16_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.95",
+      "This is a connector trail that crosses US 41 so PLEASE BE CAREFUL.  The connector comes off of the top of the Teal Lake Climb and crosses in behind the Great Lakes Recovery Center along the railroad tracks.  It brings you back to the Molton Road Trail Head and is a mix of two track and single track once you get on the south side of 41.",
+      false
   );
 
   var trailSection_17 = new TrailSection(
-      2,
-      "Trail Section 17",
+      17,
+      "Downtown Ishpeming Trail Head (17)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/17/Trail%20Section%2017/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_17_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.95",
+      "This is the fast roll-out used during the Red Earth Classic.  It utilizes the Heritage Trail and Trail 8 ATV trail to get over to the grueling Water Tower Climb!",
+      false
   );
 
   var trailSection_18 = new TrailSection(
-      2,
-      "Trail Section 18",
+      18,
+      "Yellow Location (18)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/18/Trail%20Section%2018/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_18_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "1.44",
+      "Enter down towards the lake and enjoy the scenery.  This section follows the nordic ski trail for 3/4 mile before catching a really nice piece of lakeshore single track along Teal Lake.  Be advised, though, you are by the lake and there is only one way to go…. UP, and UP and UP the Teal Lake Climb.  This hill is just plain tough on you.  It is wide open and good ground but it is long and it is relentless.  Just keep your eye on the top and don't stop pedaling!!",
+      false
   );
 
   var trailSection_19 = new TrailSection(
-      2,
-      "Trail Section 19",
+      19,
+      "Jackies' Favorite Location (19)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/19/Trail%20Section%2019/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_19_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.29",
+      "All Paved Heritage Trail so catch your breath…  You will need it for triple mountain!",
+      false
   );
 
   var trailSection_20 = new TrailSection(
-      2,
-      "Trail Section 20",
+      20,
+      "Triple Mounatain Location (20)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/20/Trail%20Section%2020/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_20_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "1.80",
+      "Triple Mountain features some of the most technical single-track along the trail.  It starts out fairly windy and fast before starting a big, tough climb.  The climb is a 2 minute plus climb that will really challenge your climbing skills and balance.  The descent from the top is fast and fun and winds through a  great mile plus section of traversing up and downs and works out to the snowmobile trail.  From there, you gotta climb again on the snowmobile trail and get up to speed for the last 3/4 mile descent down into the Michigan Street Trail Head!",
+      false
   );
 
   var trailSection_21 = new TrailSection(
-      2,
-      "Trail Section 21",
+      21,
+      "Michigan Street Trail Head (21)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/21/Trail%20Section%2021/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_21_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.1",
+      "This is a short 100 yard connector to get over to The Hamptons.",
+      false
   );
 
   var trailSection_22 = new TrailSection(
-      2,
-      "Trail Section 22",
+      22,
+      "The Hamptons Location (22)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/22/Trail%20Section%2022/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_22_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.68",
+      "The Hamptons is a great climb!  It is moderately challenging with a few spots where it lets off.  You will need to have good balance and single track / climbing skills to get up this without putting a foot down!  Once you get out to the snowmobile trail, make a left and hang on!  The descent down into Jackson Mine Park Trail Head is sketchy, fast and it has a few corners to keep you on your toes!",
+      false
   );
 
   var trailSection_23 = new TrailSection(
-      2,
-      "Trail Section 23",
+      23,
+      "Jackson Mine Park Trail Head (23)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/23/Trail%20Section%2023/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_23_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.13",
+      "Another quick, 100 foot connector to get you onto Old Town.",
+      false
   );
 
   var trailSection_24 = new TrailSection(
-      2,
-      "Trail Section 24",
+      24,
+      "Old Town Location (24)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/24/Trail%20Section%2024/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_24_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.1",
+      "This is a connector that utilizes a quick, windy section through a field and across the road to Snow Street!",
+      false
   );
 
   var trailSection_25 = new TrailSection(
-      2,
-      "Trail Section 25",
+      25,
+      "Fence Line Climb Location (25)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/25/Trail%20Section%2025/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_25_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "1.17",
+      "Get ready for a workout.  The Fence Line Climb is one of those climbs that takes most people a few attempts to get up without getting off your bike!  It requires balance, power and endurance.  The climb spits out and gives you over a mile of really nice winding single track down to Mather A.",
+      false
   );
 
   var trailSection_26 = new TrailSection(
-      2,
-      "Trail Section 26",
+      26,
+      "Mather A Location (26)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/26/Trail%20Section%2026/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_26_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.76",
+      "Mather A down is quite possibly one of the best areas along the trail.  There are spots where can get a ton of speed, there are some tight, technical spots, some good berm flow sections and just great classic single track.",
+      false
   );
 
   var trailSection_27 = new TrailSection(
-      2,
-      "Trail Section 27",
+      27,
+      "Power Station (27)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/27/Trail%20Section%2027/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_27_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.64",
+      "This is a connector to downtown if you want to cut off the west end loop out and under the highway.",
+      false
   );
 
   var trailSection_28 = new TrailSection(
-      2,
-      "Trail Section 28",
+      28,
+      "Jasper Ridge Trail Head (28)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/28/Trail%20Section%2028/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_28_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.27",
+      "Take the road, through the light and across to the base of the Last Bluff!",
+      false
   );
 
   var trailSection_29 = new TrailSection(
-      2,
-      "Trail Section 29",
+      29,
+      "Water Tower (29)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/29/Trail%20Section%2029/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_29_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "1.0",
+      "(need description)",
+      false
   );
 
   var trailSection_30 = new TrailSection(
-      2,
-      "Trail Section 30",
+      30,
+      "Connector for Watertower (30)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/30/Trail%20Section%2030/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_30_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.1",
+      "(need description)",
+      false
   );
 
   var trailSection_31 = new TrailSection(
-      2,
-      "Trail Section 31",
+      31,
+      "Bacon Strip Location (31)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/31/Trail%20Section%2031/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_31_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "0.27",
+      "(need description)",
+      false
   );
 
   var trailSection_32 = new TrailSection(
-      2,
-      "Trail Section 32",
+      32,
+      "Ish Playground Location (32)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/32/Trail%20Section%2032/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_32_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "2.67",
+      "(need description)",
+      false
   );
 
   var trailSection_33 = new TrailSection(
-      2,
-      "Trail Section 33",
+      33,
+      "Trail Section (33)",
       "Intermediate",
       "<img src='http://lorempixel.com/200/150/nature/33/Trail%20Section%2033/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_33_coordinates,
       "#FF0000",
-      "#FFFFFF"
+      "#FFFFFF",
+      "4.15",
+      "(need description)",
+      false
   );
 
 
@@ -613,7 +721,25 @@ function initialize() {
       trail paths, defines mouseover, mouseout and hover actions,
       and also populates the Details Panel when a path is clicked.
   --------------------------------------------------------------*/
+  
   function google_mapify_each_section(key, value) {
+    
+    /* Reset Trails Function
+        When a user selects a trail section, this function will reset
+        all previously selected trail sections back to their original
+        color.  This function is run on every instance of our google 
+        map paths.
+    --------------------------------------------------------------*/
+    function resetTrails() {
+            console.log(this);
+            console.log(this.active);
+            this.active = false; 
+            
+            this.setOptions({
+                strokeColor: "#FF0000",
+                 strokeWeight: 7
+             });
+    }
 
     if (value.coordinates) {
 
@@ -629,10 +755,30 @@ function initialize() {
         });
         trailPath.setMap(map);
 
+        //dump every google map path object into an array so they can be iterated through later 
+        trailArray.push(trailPath);  
+
 
          /* On Path Click
         --------------------------------------------------------------*/
+
         google.maps.event.addListener(trailPath, 'click', function (event) {
+
+          // Run Reset Function on All Google Map Path Objects 
+          $.each(trailArray, resetTrails);
+
+          // Select active trail 
+          value.active = true;
+
+          // Change color of trail
+          if (value.active == true){
+            console.log(value);
+            this.setOptions({
+                strokeColor: value.hovercolor,
+                 strokeWeight: 7
+             });
+          }
+         
           
           // If the Details Panel is closed, open it up.
           if ( $('#toggle-slide-button img').attr('src') == '/img/map-arrow-open.png' ) {
@@ -642,8 +788,12 @@ function initialize() {
           // Populate the Details Panel
           $('#trail-id').html(value.name);
           $('#trail-difficulty').html(value.difficulty);
+          $('#trail-length').html(value.length);
+          $('#trail-desc').html(value.desc);
           $('#trail-thumb').html(value.thumb);
           $('#trail-sponsor').html(value.sponsor);
+
+
         });
 
 
@@ -669,11 +819,17 @@ function initialize() {
          /* On Path Mouseout
         --------------------------------------------------------------*/
         google.maps.event.addListener(trailPath, 'mouseout', function (event) {
+            
+          // If trail is NOT active 
+          if (value.active == false) {
+
             // Remove path hover styles
             this.setOptions({
                 strokeColor: value.pathcolor,
                 strokeWeight: 6
             });
+
+          }
             infowindow.close();
         });
     }
@@ -691,6 +847,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
       <p><strong>Trail Difficulty:</strong></p>
       <p id="trail-difficulty">Please select a trail.</p>
+
+      <p><strong>Trail Length:</strong></p>
+      <p id="trail-length">Please select a trail.</p>
+
+      <p><strong>Trail Description:</strong></p>
+      <p id="trail-desc">Please select a trail.</p>
 
       <p><strong>Trail Thumbnail:</strong></p>
       <p id="trail-thumb">Please select a trail.</p>
