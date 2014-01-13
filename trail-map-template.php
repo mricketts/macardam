@@ -648,7 +648,7 @@ function initialize() {
       "<img src='http://lorempixel.com/200/150/nature/30/Trail%20Section%2030/' />",
       "<img src='http://lorempixel.com/250/75/business/' />",
       section_30_coordinates,
-      "#FF0000",
+      "#3bb8b8",
       "#FFFFFF",
       "0.1",
       "(need description)",
@@ -3162,6 +3162,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
       var section_17_coordinates =  [
+              new google.maps.LatLng(46.496333, -87.652516),
               new google.maps.LatLng(46.496332, -87.652439),
               new google.maps.LatLng(46.496183, -87.652485),
               new google.maps.LatLng(46.496142, -87.652495),
@@ -5007,6 +5008,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
               // 30
       var section_30_coordinates =  [
+              new google.maps.LatLng(46.496883, -87.652467),
               new google.maps.LatLng(46.496830, -87.652477),
               new google.maps.LatLng(46.496811, -87.652507),
               new google.maps.LatLng(46.496725, -87.652523),
@@ -5018,7 +5020,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
               new google.maps.LatLng(46.496583, -87.652501),
               new google.maps.LatLng(46.496486, -87.652538),
               new google.maps.LatLng(46.496396, -87.652545),
-              new google.maps.LatLng(46.496360, -87.652538)
+              new google.maps.LatLng(46.496360, -87.652538),
+              new google.maps.LatLng(46.496333, -87.652516)
               ];
 
               // 31
@@ -6546,7 +6549,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
               new google.maps.LatLng(46.502114, -87.682238),
               new google.maps.LatLng(46.502114, -87.681946),
               new google.maps.LatLng(46.502096, -87.681752),
-              new google.maps.LatLng(46.502028, -87.680935)
+              new google.maps.LatLng(46.502028, -87.680935),
+              new google.maps.LatLng(46.502015, -87.680786),
               ];
     </script>
 
